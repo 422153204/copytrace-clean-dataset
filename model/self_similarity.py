@@ -11,7 +11,7 @@ class SelfSimilarity(nn.Module):
 
     def forward(self, features: torch.Tensor) -> torch.Tensor:
         if features.ndim != 3:
-            raise ValueError('特征输入形状必须为 [batch, frames, dim]。')
+            raise ValueError('Feature inputs must have shape [batch, frames, dim].')
         normalized = F.normalize(features, p=2, dim=-1)
         similarity = torch.matmul(normalized, normalized.transpose(1, 2))
         return similarity / self.temperature
@@ -24,5 +24,5 @@ class SimilarityRidgeEncoder(nn.Module):
 
     def forward(self, similarity: torch.Tensor) -> torch.Tensor:
         if similarity.ndim != 3:
-            raise ValueError('相似度矩阵形状必须为 [batch, frames, frames]。')
+            raise ValueError('Similarity matrices must have shape [batch, frames, frames].')
         return self.net(similarity.unsqueeze(1))

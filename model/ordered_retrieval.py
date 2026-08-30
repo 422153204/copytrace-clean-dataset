@@ -10,9 +10,9 @@ def mask_interval(mask: torch.Tensor, threshold: float=0.5) -> tuple[int, int] |
 
 def ordered_candidate_scores(target_sequence: torch.Tensor, source_embeddings: torch.Tensor, alignment_radius: int=1) -> torch.Tensor:
     if target_sequence.ndim != 2 or source_embeddings.ndim != 2:
-        raise ValueError('目标序列和源嵌入必须使用 [帧数, 维度] 形状。')
+        raise ValueError('Target sequences and source embeddings must have shape [frames, dim].')
     if target_sequence.shape[1] != source_embeddings.shape[1]:
-        raise ValueError('目标序列与源嵌入的特征维度必须一致。')
+        raise ValueError('Target sequences and source embeddings must have matching feature dimensions.')
     target_length = target_sequence.shape[0]
     source_length = source_embeddings.shape[0]
     if target_length <= 0 or target_length > source_length:
@@ -63,7 +63,7 @@ def restrict_to_coarse_top_k(ordered_scores: torch.Tensor, coarse_scores: torch.
     if top_k <= 0 or top_k >= ordered_scores.numel():
         return ordered_scores
     if ordered_scores.numel() != coarse_scores.numel():
-        raise ValueError('有序候选分数和粗筛分数数量必须一致。')
+        raise ValueError('Ordered candidate scores and coarse scores must have the same length.')
     finite = torch.isfinite(coarse_scores)
     finite_count = int(finite.sum().item())
     if finite_count <= top_k:

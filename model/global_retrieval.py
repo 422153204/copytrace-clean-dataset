@@ -12,6 +12,6 @@ class GlobalSourceRetrievalHead(nn.Module):
 
     def forward(self, features: torch.Tensor) -> torch.Tensor:
         if features.ndim != 3:
-            raise ValueError('检索特征形状必须为 [批次, 帧数, 维度]。')
+            raise ValueError('Retrieval features must have shape [batch, frames, dim].')
         embeddings = self.projection(features)
         return F.normalize(embeddings, p=2, dim=-1)
